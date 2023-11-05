@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{room.name}}</title>
+</head>
+<body>
+    <h1>Welcome to {{room.name}} Room</h1>
+
+    <div>
+        <div>
+            Username
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum ad laudantium voluptate cum veritatis, excepturi doloribus quod enim laboriosam ipsum hic odit modi. Repellendus temporibus suscipit ipsam iusto accusamus sed!</p>
+        </div>
+        <div>
+            Username
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum ad laudantium voluptate cum veritatis, excepturi doloribus quod enim laboriosam ipsum hic odit modi. Repellendus temporibus suscipit ipsam iusto accusamus sed!</p>
+        </div>
+        <div>
+            Username
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum ad laudantium voluptate cum veritatis, excepturi doloribus quod enim laboriosam ipsum hic odit modi. Repellendus temporibus suscipit ipsam iusto accusamus sed!</p>
+        </div>
+        <form action="">
+            <input type="text" placeholder="Enter your message">
+            <button>Send</button>
+        </form>
+    </div>
+
+
+
+    <!-- script for chat frontend -->
+    {{  room.slug|json_script:"json-roomname" }}
+    <script>
+        const roomName = JSON.parse(document.getElementById('json-roomname').textContent)
+        const webSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/'
+            + roomName + '/'
+        );
+        webSocket.onmessage = (e) => {
+            console.log('onmessage')
+        }
+        webSocket.onopen = (e) => {
+            console.log('Socket Connected!')
+        }
+        webSocket.onclose = (e) => {
+            console.log('Socket closed!')
+        }
+    </script>
+    
+    
+</body>
+</html>

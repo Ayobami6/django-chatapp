@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rooms</title>
+</head>
+<body>
+    <h1>This is Rooms Page</h1>
+    <div>
+        {% for room in rooms %}
+        <a href="{% url 'room' room.slug %}">{{ room.name }}</a>
+        {% endfor %}
+    </div>
+    
+</body>
+</html>
