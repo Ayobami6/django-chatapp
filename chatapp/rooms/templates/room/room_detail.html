@@ -9,21 +9,12 @@
     <h1>Welcome to {{room.name}} Room</h1>
 
     <div>
-        <div>
-            Username
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum ad laudantium voluptate cum veritatis, excepturi doloribus quod enim laboriosam ipsum hic odit modi. Repellendus temporibus suscipit ipsam iusto accusamus sed!</p>
-        </div>
-        <div>
-            Username
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum ad laudantium voluptate cum veritatis, excepturi doloribus quod enim laboriosam ipsum hic odit modi. Repellendus temporibus suscipit ipsam iusto accusamus sed!</p>
-        </div>
-        <div>
-            Username
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum ad laudantium voluptate cum veritatis, excepturi doloribus quod enim laboriosam ipsum hic odit modi. Repellendus temporibus suscipit ipsam iusto accusamus sed!</p>
+        <div id="messages">
+           
         </div>
         <form action="">
-            <input type="text" placeholder="Enter your message">
-            <button>Send</button>
+            <input type="text" id="chat-message" placeholder="Enter your message">
+            <button id="chat-message-send">Send</button>
         </form>
     </div>
 
@@ -31,20 +22,46 @@
 
     <!-- script for chat frontend -->
     {{  room.slug|json_script:"json-roomname" }}
+    {{ request.user.username|json_script:"json-username" }}
     <script>
         const roomName = JSON.parse(document.getElementById('json-roomname').textContent)
+        const userName = JSON.parse(document.getElementById('json-username').textContent)
         const webSocket = new WebSocket(
             'ws://' + window.location.host + '/ws/'
             + roomName + '/'
         );
         webSocket.onmessage = (e) => {
             console.log('onmessage')
+            const data = JSON.parse(e.data)
+            if (data.message) {
+                let html = '<div>';
+                    html += '<p>' + data.username + '</p>';
+                    html += '<p>' + data.message + '</p> </div>';
+                document.querySelector('#messages').innerHTML += html
+
+            } else {
+                alert('Message is empty')
+            }
         }
         webSocket.onopen = (e) => {
             console.log('Socket Connected!')
         }
         webSocket.onclose = (e) => {
             console.log('Socket closed!')
+        }
+        document.querySelector('#chat-message-send').onclick = (e) => {
+        e.preventDefault();
+        const messageInput = document.querySelector('#chat-message');
+        const message = messageInput.value;
+        webSocket.send(JSON.stringify({
+            'message': message,
+            'username': userName,
+            'roomname': roomName
+        }))
+
+        messageInput.value = '';
+        return false;
+
         }
     </script>
     
