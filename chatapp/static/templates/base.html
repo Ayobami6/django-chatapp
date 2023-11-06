@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{% block title %} Django ChatApp {% endblock %}</title>
+</head>
+<body class="bg-green-400 m-4">
+    <h1 class="text-3xl font-bold text-center my-5">Django chat app demo</h1>
+    <div class="m-3">
+        {% if user.is_authenticated %}
+        <button class="w-[150px] h-[40px] p-2 bg-gray-400 hover:bg-gray-700 rounded-full text-black font-bold"><a href="{% url 'logout' %}">logout</a></button>
+		
+		{% else  %}
+		
+        <button class="w-[150px] h-[40px] p-2 bg-gray-400 hover:bg-gray-700 rounded-full text-black font-bold"><a class="" href="{% url 'signup' %}">Signup</a></button>
+		
+        <button class="w-[150px] h-[40px] p-2 bg-gray-400 hover:bg-gray-700 rounded-full text-black font-bold"><a href="{% url 'login' %}">login</a></button>
+		{% endif %}
+    </div>
+		
+    <div >
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

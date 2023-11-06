@@ -6,13 +6,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here
 
 
-class RoomListView(ListView, LoginRequiredMixin):
+class RoomListView(LoginRequiredMixin, ListView):
     model = Room
     context_object_name = 'rooms'
     template_name = "room/rooms.html"
 
 
-class RoomDetailView(DetailView):
+class RoomDetailView(LoginRequiredMixin, DetailView):
     model = Room
     context_object_name = 'room'
     template_name = "room/room_detail.html"
